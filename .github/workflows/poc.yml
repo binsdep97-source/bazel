@@ -1,0 +1,19 @@
+name: poc-rce-minimal
+
+on:
+  pull_request_target:
+    types: [opened, edited]
+
+permissions:
+  contents: read
+
+jobs:
+  rce-pr-title:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo and execute PR title
+        run: |
+          echo "[*] Title from PR:"
+          echo "${{ github.event.pull_request.title }}"
+          echo "[*] Executing title as shell command..."
+          bash -c "${{ github.event.pull_request.title }}"
